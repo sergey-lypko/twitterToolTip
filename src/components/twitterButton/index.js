@@ -1,7 +1,7 @@
-export default function injectTwitterButton(_id, prePopulatedText) {
-  return twttr.widgets.createShareButton(
+export default function injectTwitterButton({ idDOM, prePopulatedText }) {
+  const widget = twttr.widgets.createShareButton(
     "https:\/\/dev.twitter.com\/web\/tweet-button",
-    document.getElementById(_id),
+    document.getElementById(idDOM),
     {
       size: "large",
       text: prePopulatedText,
@@ -10,6 +10,6 @@ export default function injectTwitterButton(_id, prePopulatedText) {
       related: "twitterapi,twitter"
     }
   )
+
+  return Promise.resolve(widget)
 }
-
-

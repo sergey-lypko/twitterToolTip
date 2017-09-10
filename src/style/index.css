@@ -2,6 +2,9 @@
     --content-block-max-width: 750px;
     --content-block-padding: 25px;
 
+    --tool-tip-width: 150px;
+    --tool-tip-height: 40px;
+
     --content-text-font-size: 19px;
     --content-text-line-height: 28px;
     --content-text-color: #464646;
@@ -23,6 +26,30 @@
     padding: var(--content-block-padding);
 }
 
+/* * * ToolTip * * */
+.tool-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: var(--tool-tip-width);
+  height: var(--tool-tip-height);
+  border: 1px solid var(--theme-color);
+  border-radius: 4px;
+  background-color: var(--theme-color);
+}
+
+.tool-tip::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 3px;
+    transform: rotate(45deg);
+    width: 15px;
+    height: 15px;
+    background-color: var(--theme-color);
+}
+
 
 /* * * Typography * * */
 .content-text {
@@ -36,9 +63,8 @@ p + p {
     padding-top: 20px;
 }
 
-p.int::first-letter,
-p::first-letter {
-    padding-left: 25px;
+.par-first-letter {
+    /*padding-left: 25px;*/
 }
 
 p.int::first-letter {
@@ -47,6 +73,6 @@ p.int::first-letter {
 }
 
 p::selection {
-    background-color: #674172;
-    color: #fff;
+    /*background-color: #674172;*/
+    /*color: #fff;*/
 }

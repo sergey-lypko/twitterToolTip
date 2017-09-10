@@ -9020,15 +9020,15 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-var _toolTip = __webpack_require__(331);
+var _toolTip = __webpack_require__(328);
 
 var _toolTip2 = _interopRequireDefault(_toolTip);
 
-var _twitterButton = __webpack_require__(332);
+var _twitterButton = __webpack_require__(329);
 
 var _twitterButton2 = _interopRequireDefault(_twitterButton);
 
-var _removeElementsByClassName = __webpack_require__(329);
+var _removeElementsByClassName = __webpack_require__(330);
 
 var _removeElementsByClassName2 = _interopRequireDefault(_removeElementsByClassName);
 
@@ -9036,19 +9036,42 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // TODO publish somewhere in heroku and run via local host (for develop)
 
-function init(e) {
-  (0, _removeElementsByClassName2.default)('tool-tip');
+document.body.onmousedown = function (e) {
+  if (e.target.id !== 'twitter_tool_tip') {
+    (0, _removeElementsByClassName2.default)('tool-tip');
+  }
+};
 
+function startSpinner() {
+  // TODO fix this stuff
+  var toolTip = document.getElementById('twitter_tool_tip');
+  var tt = toolTip.appendChild('div');
+  tt.innerHTML = '\n    <input type="button" value="\u042F \u0432\u043D\u043E\u0432\u044C \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0439">\n  ';
+}
+
+function init(e) {
   var selection = window.getSelection();
   var range = selection.getRangeAt(0);
   var rect = range.getBoundingClientRect();
 
-  var toolTip = (0, _toolTip2.default)(rect, 'twitter_tool_tip', 'tool-tip');
+  var toolTip = (0, _toolTip2.default)({
+    selectionRect: rect,
+    idDOM: 'twitter_tool_tip',
+    classDOM: 'tool-tip'
+  });
 
   if (selection.anchorOffset !== selection.focusOffset) {
-    if (selection.toString().length < 140) {
+    var _selection$toString = selection.toString(),
+        length = _selection$toString.length;
+
+    if (length < 140 && length !== 0) {
       document.body.appendChild(toolTip);
-      (0, _twitterButton2.default)('twitter_tool_tip', selection.toString());
+      startSpinner();
+
+      (0, _twitterButton2.default)({
+        idDOM: 'twitter_tool_tip',
+        prePopulatedText: selection.toString()
+      }).then(function () {});
     }
   }
 }
@@ -9060,8 +9083,62 @@ if (!document.all) {
 }
 
 /***/ }),
-/* 328 */,
+/* 328 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createToolTip;
+function createToolTip(_ref) {
+  var selectionRect = _ref.selectionRect,
+      idDOM = _ref.idDOM,
+      classDOM = _ref.classDOM;
+
+  var toolTip = document.createElement('div');
+
+  toolTip.setAttribute("id", idDOM);
+  toolTip.setAttribute("class", classDOM);
+
+  console.log(selectionRect.width);
+
+  toolTip.style.top = selectionRect.top - 53 + 'px';
+  toolTip.style.left = selectionRect.left - 1 + 'px';
+
+  return toolTip;
+}
+
+/***/ }),
 /* 329 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = injectTwitterButton;
+function injectTwitterButton(_ref) {
+  var idDOM = _ref.idDOM,
+      prePopulatedText = _ref.prePopulatedText;
+
+  var widget = twttr.widgets.createShareButton("https:\/\/dev.twitter.com\/web\/tweet-button", document.getElementById(idDOM), {
+    size: "large",
+    text: prePopulatedText,
+    hashtags: "example,demo",
+    via: "twitterdev",
+    related: "twitterapi,twitter"
+  });
+
+  return Promise.resolve(widget);
+}
+
+/***/ }),
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9077,55 +9154,6 @@ function removeElementsByClassName(className) {
     while (elements.length > 0) {
         elements[0].parentNode.removeChild(elements[0]);
     }
-}
-
-/***/ }),
-/* 330 */,
-/* 331 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = createToolTip;
-function createToolTip(selectionReact, _id, _className) {
-  var toolTip = document.createElement('div');
-
-  toolTip.setAttribute("id", _id);
-  toolTip.setAttribute("class", _className);
-
-  toolTip.style.border = '1px solid black';
-  toolTip.style.position = 'fixed';
-  toolTip.style.top = selectionReact.top + 'px';
-  toolTip.style.left = selectionReact.left + 'px';
-  toolTip.style.height = selectionReact.height + 'px';
-  toolTip.style.width = 100 + 'px';
-
-  return toolTip;
-}
-
-/***/ }),
-/* 332 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = injectTwitterButton;
-function injectTwitterButton(_id, prePopulatedText) {
-  return twttr.widgets.createShareButton("https:\/\/dev.twitter.com\/web\/tweet-button", document.getElementById(_id), {
-    size: "large",
-    text: prePopulatedText,
-    hashtags: "example,demo",
-    via: "twitterdev",
-    related: "twitterapi,twitter"
-  });
 }
 
 /***/ })
