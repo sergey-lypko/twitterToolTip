@@ -1,0 +1,52 @@
+:root {
+    --content-block-max-width: 750px;
+    --content-block-padding: 25px;
+
+    --content-text-font-size: 19px;
+    --content-text-line-height: 28px;
+    --content-text-color: #464646;
+
+    --theme-color: #674172;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 50px 0 100px;
+}
+
+.content {
+    max-width: var(--content-block-max-width);
+    padding: var(--content-block-padding);
+}
+
+
+/* * * Typography * * */
+.content-text {
+    font-family: 'Cardo', serif;
+    font-size: var(--content-text-font-size);
+    line-height: var(--content-text-line-height);
+    color: var(--content-text-color);
+}
+
+p + p {
+    padding-top: 20px;
+}
+
+p.int::first-letter,
+p::first-letter {
+    padding-left: 25px;
+}
+
+p.int::first-letter {
+    font-size: 42px;
+    color: var(--theme-color);
+}
+
+p::selection {
+    background-color: #674172;
+    color: #fff;
+}

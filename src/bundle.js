@@ -9020,9 +9020,13 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-var _toolTip = __webpack_require__(328);
+var _toolTip = __webpack_require__(331);
 
 var _toolTip2 = _interopRequireDefault(_toolTip);
+
+var _twitterButton = __webpack_require__(332);
+
+var _twitterButton2 = _interopRequireDefault(_twitterButton);
 
 var _removeElementsByClassName = __webpack_require__(329);
 
@@ -9030,68 +9034,33 @@ var _removeElementsByClassName2 = _interopRequireDefault(_removeElementsByClassN
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var t = '';
+// TODO publish somewhere in heroku and run via local host (for develop)
 
-// TODO rename and compose with utils/makeToolTip funcs 
-function gText(e) {
+function init(e) {
   (0, _removeElementsByClassName2.default)('tool-tip');
-
-  t = document.all ? document.selection.createRange().text : document.getSelection();
-  document.getElementById('input').value = t;
 
   var selection = window.getSelection();
   var range = selection.getRangeAt(0);
   var rect = range.getBoundingClientRect();
 
+  var toolTip = (0, _toolTip2.default)(rect, 'twitter_tool_tip', 'tool-tip');
+
   if (selection.anchorOffset !== selection.focusOffset) {
-    var toolTip = (0, _toolTip2.default)(rect, 'twitter_tool_tip', 'tool-tip');
-    document.body.appendChild(toolTip);
+    if (selection.toString().length < 140) {
+      document.body.appendChild(toolTip);
+      (0, _twitterButton2.default)('twitter_tool_tip', selection.toString());
+    }
   }
 }
 
-document.onmouseup = gText;
+// TODO investigate another implementation (via listeners or something)
+document.onmouseup = init;
 if (!document.all) {
   document.captureEvents(Event.MOUSEUP);
 }
 
 /***/ }),
-/* 328 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = createToolTip;
-// TODO make as a constructor or factury
-
-/*
-* ToolTip factory
-*/
-function createToolTip(selectionReact, _id, _className) {
-  var toolTip = document.createElement('div');
-  var twitterLink = document.createElement('a');
-
-  toolTip.setAttribute("id", _id);
-  toolTip.setAttribute("class", _className);
-
-  toolTip.style.border = '1px solid black';
-  toolTip.style.position = 'fixed';
-  toolTip.style.top = selectionReact.top + 'px';
-  toolTip.style.left = selectionReact.left + 'px';
-  toolTip.style.height = selectionReact.height + 'px';
-  toolTip.style.width = 100 + 'px';
-
-  // twitterLink.setAttribute('href', "https://twitter.com/intent/tweet")
-  // twitterLink.innerHTML = "<span>Tweet</span>"
-  // document.getElementById('div_1').appendChild(twitterLink)
-
-  return toolTip;
-}
-
-/***/ }),
+/* 328 */,
 /* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9108,6 +9077,55 @@ function removeElementsByClassName(className) {
     while (elements.length > 0) {
         elements[0].parentNode.removeChild(elements[0]);
     }
+}
+
+/***/ }),
+/* 330 */,
+/* 331 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createToolTip;
+function createToolTip(selectionReact, _id, _className) {
+  var toolTip = document.createElement('div');
+
+  toolTip.setAttribute("id", _id);
+  toolTip.setAttribute("class", _className);
+
+  toolTip.style.border = '1px solid black';
+  toolTip.style.position = 'fixed';
+  toolTip.style.top = selectionReact.top + 'px';
+  toolTip.style.left = selectionReact.left + 'px';
+  toolTip.style.height = selectionReact.height + 'px';
+  toolTip.style.width = 100 + 'px';
+
+  return toolTip;
+}
+
+/***/ }),
+/* 332 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = injectTwitterButton;
+function injectTwitterButton(_id, prePopulatedText) {
+  return twttr.widgets.createShareButton("https:\/\/dev.twitter.com\/web\/tweet-button", document.getElementById(_id), {
+    size: "large",
+    text: prePopulatedText,
+    hashtags: "example,demo",
+    via: "twitterdev",
+    related: "twitterapi,twitter"
+  });
 }
 
 /***/ })
