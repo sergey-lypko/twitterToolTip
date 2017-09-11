@@ -10,13 +10,15 @@ document.body.onmousedown = function(e) {
   }
 }
 
-function startSpinner() {
-  // TODO fix this stuff
-  const toolTip = document.getElementById('twitter_tool_tip')
-  const tt = toolTip.appendChild('div')
-  tt.innerHTML = `
-    <input type="button" value="Я вновь созданный">
-  `
+// TODO refactor with passing element and class names
+function showSpinner() {
+  const loader = document.getElementById('tool_tip_loader')
+  loader.className += ' spinner-visible'
+}
+
+function hideSpinner() {
+  const loader = document.getElementById('tool_tip_loader')
+  loader.className += 'tool-tip-loader'
 }
 
 function init(e) {
@@ -35,13 +37,13 @@ function init(e) {
 
     if (length < 140 && length !== 0) {
       document.body.appendChild(toolTip)
-      startSpinner()
+      showSpinner()
 
       injectTwitterButton({
         idDOM: 'twitter_tool_tip',
         prePopulatedText: selection.toString()
       }).then(() => {
-
+        hideSpinner()
       })
     }
   }

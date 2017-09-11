@@ -51,6 +51,53 @@
 }
 
 
+/* * * Loader * * */
+.tool-tip-loader {
+    visibility: hidden;
+    opacity: 0;
+
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 30px;
+    height: 15px;
+}
+
+.tool-tip-loader.spinner-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.loader-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    background-color: #fff;
+    animation: flashing 1s infinite;
+}
+
+.loader-dot.loader-dot-1 {
+    animation-delay: 0.2s;
+}
+
+.loader-dot.loader-dot-2 {
+    animation-delay: 0.4s;
+}
+
+@keyframes flashing {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
 /* * * Typography * * */
 .content-text {
     font-family: 'Cardo', serif;

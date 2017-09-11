@@ -9042,11 +9042,15 @@ document.body.onmousedown = function (e) {
   }
 };
 
-function startSpinner() {
-  // TODO fix this stuff
-  var toolTip = document.getElementById('twitter_tool_tip');
-  var tt = toolTip.appendChild('div');
-  tt.innerHTML = '\n    <input type="button" value="\u042F \u0432\u043D\u043E\u0432\u044C \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0439">\n  ';
+// TODO refactor with passing element and class names
+function showSpinner() {
+  var loader = document.getElementById('tool_tip_loader');
+  loader.className += ' spinner-visible';
+}
+
+function hideSpinner() {
+  var loader = document.getElementById('tool_tip_loader');
+  loader.className += 'tool-tip-loader';
 }
 
 function init(e) {
@@ -9066,12 +9070,14 @@ function init(e) {
 
     if (length < 140 && length !== 0) {
       document.body.appendChild(toolTip);
-      startSpinner();
+      showSpinner();
 
       (0, _twitterButton2.default)({
         idDOM: 'twitter_tool_tip',
         prePopulatedText: selection.toString()
-      }).then(function () {});
+      }).then(function () {
+        hideSpinner();
+      });
     }
   }
 }
@@ -9103,10 +9109,20 @@ function createToolTip(_ref) {
   toolTip.setAttribute("id", idDOM);
   toolTip.setAttribute("class", classDOM);
 
-  console.log(selectionRect.width);
-
   toolTip.style.top = selectionRect.top - 53 + 'px';
   toolTip.style.left = selectionRect.left - 1 + 'px';
+
+  var loader = document.createElement("div");
+
+  loader.setAttribute("id", 'tool_tip_loader');
+  loader.setAttribute("class", 'tool-tip-loader');
+  toolTip.appendChild(loader);
+
+  for (var i = 0; i < 3; i++) {
+    var el = document.createElement('div');
+    el.setAttribute('class', "loader-dot loader-dot-" + i);
+    loader.appendChild(el);
+  }
 
   return toolTip;
 }
